@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scoreboard</title>
+
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+
+    <style type="text/css">
+        #scoreboard {
+/*            width: 100%;*/
+            height: 300px;
+            border: 1px solid red;
+        }
+
+        #scoreboard .score {
+            font: 500px fantasy;
+
+        }
+
+        #scoreboard .score div {
+            display: flex;
+        }
+
+        #scoreboard .score span {
+            margin: auto;
+        }
+
+        #scoreboard .score .home span, #scoreboard .score .host span{
+            padding: 50px;
+        }
+
+        #scoreboard .score .home, #scoreboard .score .host {
+            width: 50%;
+        }
+
+        #scoreboard .score .delimeter {
+            display: none;
+        }
+        #scoreboard .score .delimeter span {
+            padding-top: 50px;
+        }
+        .score .home{
+            color: #000000;
+            background-color: #FFFFFF;
+        }
+
+        .score .host{
+            color: #FFFFFF;
+            background-color: #000000;
+        }
+
+        #scoreboard .score div {
+            float: left;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="true" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Scoreboard</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse" aria-expanded="true">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Akce <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Seznam zapasu</a></li>
+                        <li><a href="#">Odeslat na server</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div id="scoreboard" class="container-fluid">
+    <div class="score row">
+        <div class="team-score home col-xs-5 col-sm-5" data-team-side="home">
+            <span id="score-home">0</span>
+        </div>
+        <div class="delimeter col-xs-2 col-sm-2">
+            <span>:</span>
+        </div>
+        <div class="team-score host col-xs-5 col-sm-5" data-team-side="host">
+            <span id="score-host">0</span>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>
