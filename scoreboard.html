@@ -411,7 +411,9 @@
             }
 
             function _initButtons(){
-
+                $('#flip-score-button').click(function() {
+                    $('#scoreboard div.score').toggleClass('flipped');
+                });
 
 
                 $(_ids.flip_score_button).click(function () {
@@ -626,6 +628,7 @@
             position: absolute;
             right: 0;
             bottom: 0;
+            background-color: #FFFFFF;
         }
 
         .text-button {
