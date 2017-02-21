@@ -1,0 +1,194 @@
+/**
+ * Scoreboard CSS
+ *
+ * @author Tomas Domanik
+ */
+
+/* update bootstrap */
+.btn {
+    padding: 10px;
+    font-size: 20px;
+}
+
+div.modal-dialog div.panel-heading {
+    padding: 3px;
+}
+
+div.modal-dialog h4.panel-title a {
+    width: 100%;
+    display: inline-block;
+    padding: 3px 10px;
+}
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        width: 80%;
+    }
+}
+
+div.modal-dialog h4.panel-title a {
+    font: 28px fantasy;
+
+}
+div.modal-dialog h4.panel-title a:active,
+div.modal-dialog h4.panel-title a:focus,
+div.modal-dialog h4.panel-title a:hover {
+    text-decoration: none;
+}
+
+div.modal-dialog button.btn.cancel-action {
+    float: left;
+}
+
+div.modal-dialog button.btn {
+    font-size: 20px;
+    padding: 20px;
+}
+
+div.modal-dialog button.btn.all-set {
+    padding: 20px 50px;
+    font-size: 50px;
+}
+div.modal-dialog h5.modal-title {
+    margin: 0 10px 0 0;
+    line-height: 1.42857143;
+    float: left;
+}
+
+div.modal-dialog .modal-title {
+    font: 35px fantasy;
+}
+
+#scoreboard {
+    /*            width: 100%;*/
+    height: 300px;
+    border: 1px solid red;
+}
+
+#scoreboard .score {
+    font: 500px fantasy;
+
+}
+
+#scoreboard .score div {
+    display: flex;
+}
+
+#scoreboard .score span {
+    margin: auto;
+}
+
+#scoreboard .score .home span, #scoreboard .score .host span{
+    padding: 50px;
+}
+
+#scoreboard .score .home, #scoreboard .score .host {
+    width: 50%;
+}
+
+#scoreboard .score .delimeter {
+    display: none;
+}
+#scoreboard .score .delimeter span {
+    padding-top: 50px;
+}
+.score .home{
+    color: #000000;
+    background-color: #FFFFFF;
+}
+
+.score .host{
+    color: #FFFFFF;
+    background-color: #000000;
+}
+
+#scoreboard .score div {
+    float: left;
+}
+
+#scoreboard .score-flip-button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background-color: #FFFFFF;
+}
+
+.text-button {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid #000000;
+}
+
+.flipped {
+    -moz-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+    /*
+      filter: FlipV;
+      -ms-filter: "FlipV";
+    */
+}
+
+p.add-goal.button-team {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: left;
+    width: 45%;
+    margin: 2.5%;
+    height: 200px;
+    font-size: 70px;        }
+
+p.add-goal.button-player {
+    padding: 20px 10px;
+    width: 120px;
+    height: 120px;
+    margin: 5px;
+}
+
+p.add-goal.button-player.team-selected {
+    padding: 40px;
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+}
+
+p.add-goal.btn span.no{
+    font-size: 32px;
+}
+
+
+p.add-goal.team-selected span.no {
+    font-size: 70px;
+}
+
+p.add-goal.btn.team-selected span.no span.sharp {
+    font-size: 40px;
+}
+
+p.add-goal.btn span.no span.sharp {
+    font-size: 21px;
+}
+
+p.add-goal.btn span.name{
+    display: block;
+    font-size: 15px;
+}
+
+p.add-goal.btn.team-selected span.name {
+    font-size: 20px;
+}
+
+.add-goal.btn {
+    border: 1px solid #000000;
+}
+
+.btn.team-home {
+    color: #000000;
+    background-color: #FFFFFF;
+}
+.btn.team-host {
+    color: #FFFFFF;
+    background-color: #000000;
+}
