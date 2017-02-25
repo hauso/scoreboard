@@ -2,7 +2,6 @@
  * Scoreboard JS
  *
  * @author Tomas Domanik
- *
  */
 
 
@@ -15,8 +14,14 @@
             'home': '#score-home',
             'host': '#score-host'
         },
+        dialog: {
+            goal: '#goal-dialog',
+            match_list: '#match-list-dialog',
+            match_info: '#match-info-dialog',
+            /*goal: '#goal-dialog',*/
+
+        },
         'goal_dialog': '#goal-dialog',
-        'add_goal': 'input.add-goal',
         'flip_score_button' : '#flip-score-button',
     }
 
@@ -35,13 +40,10 @@
 
 
     match.init = function($config) {
-        _initScoreBoard();
-        _initButtons();
-
         var config = $config || {};
 
         if(typeof config.matchId != 'undefined') {
-
+            // TODO : check what should do ...
         }
 
         // add teams from config
@@ -49,11 +51,20 @@
             $.each(config.teams, function (teamId, _t) {
                 match.addTeam(_t.side, _t.name);
 
-                el = _ids.score.teams + '.' + _t.side;
-                $(el).click(function(){
-                    match.addGoalAction(teamId);
+                score = 0;
+                if(typeof config.score != 'undefined') {
+                    score = config.score[_t.side] || 0;
+                }
+                _setScore(_t.side, score);
+
+                $el = _ids.score.teams + '.' + _t.side;
+                $($el).click(function(){
+                    match.addGoalAction(_t.side);
                 });
             });
+
+        } else {
+            alert('teams not defined !');
         }
 
         // add players from config
@@ -62,8 +73,207 @@
                 match.addPlayer(_p.id, _p.no, _p.name, _p.team);
             });
         }
+        _initScoreBoard();
+        _initButtons();
 
     }
+
+
+    match.getCollection = function() {
+        var collection = [];
+        $.each(localStorage, function(item, data){
+            if(item.indexOf('match-') == 0) {
+                collection[item] = data;
+            }
+        });
+
+        return collection;
+    }
+
+    match.manageMatchesAction = function () {
+        manageMatchesDialog(match.getCollection());
+    }
+
+    match.loadMatchAction = function(id) {
+        match.load(id);
+    }
+
+    match.load = function (id) {
+        loadedData = JSON.parse(localStorage.getItem(id));
+        loadedData.parent = loadedData.parent || loadedData.matchId;
+
+        match.init(loadedData);
+    }
+
+
+    match.showMatchAction = function(id) {
+        match.show(id);
+    }
+
+    match.show = function (id) {
+        loadedData = JSON.parse(localStorage.getItem(id));
+
+        showMatchInfoDialog(loadedData);
+    }
+
+
+    match.sendMatchAction = function(id) {
+        match.send(id);
+    }
+
+    match.deleteMatchAction = function(id) {
+        localStorage.removeItem(id);
+
+        manageMatchesDialog(match.getCollection());
+    }
+
+    manageMatchesDialog = function (collectionList) {
+        matchHtml = '';
+
+        for(cID in collectionList) {
+            _m = JSON.parse(collectionList[cID]);
+            matchHtml = matchHtml + '<div class="match-row row" data-match-id="' + cID + '">' +
+                '<div class="col-xs-3">' + moment(_m.matchTime).format('Do/MM YYYY h:mm') + '</div>' +
+                '<div class="col-xs-9">' +
+                '   <span class="btn btn-primary" data-action="loadMatchAction" >pokracovat</span>' +
+                '   <span class="btn btn-default" data-action="showMatchAction" >zobrazit</span>' +
+                '   <span class="btn btn-default" data-action="sendMatchAction" >odeslat</span>' +
+                '   <span class="btn btn-warning" data-action="deleteMatchAction" >smazat</span>' +
+                '</div>' +
+            '</div>';
+        }
+
+        $(_ids.dialog.match_list +' div.match-collection').html(matchHtml);
+
+        $(_ids.dialog.match_list +' div.match-row span.btn[data-action]').each(function () {
+
+            $(this).click(function(){
+                match[$(this).data('action')]($(this).closest('div.match-row').data('match-id'));
+                $(_ids.dialog.match_list).modal('hide');
+
+            });
+
+        });
+
+        $(_ids.dialog.match_list).modal('show');
+    }
+
+
+    showMatchInfoDialog = function (data) {
+        if(typeof data.teams == 'undefined') return;
+
+        _hideAllModals();
+
+        $(_ids.dialog.match_info +' div.match-collection').html(matchHtml);
+
+        // add team list for modal
+        teamHtml =
+        '<div class="row list info">' +
+        '   <div class="col-xs-3">Nazev</div>' +
+        '   <div class="col-xs-2">Strana</div>' +
+        '   <div class="col-xs-1">Skore</div>' +
+        '</div>';
+        $.each(data.teams, function (i, _t) {
+            teamHtml = teamHtml +
+                '<div class="row list info team-' + _t.side + '">' +
+                '   <div class="col-xs-3">' + _t.name + '</div>' +
+                '   <div class="col-xs-2">' + _t.side + '</div>' +
+                '   <div class="col-xs-1">' + data.score[_t.side] + '</div>' +
+                '</div>';
+        });
+
+        teamHtml = '<div class="container">' + teamHtml + '</div>';
+        $(_ids.dialog.match_info +' div.teams div.infoData').html(teamHtml);
+
+        // add player list for modal
+        playerHome = playerHost ='';
+        playerHtml =
+            '<div class="row player info">' +
+            '   <div class="col-xs-1">#/div>' +
+            '   <div class="col-xs-3">Jmeno</div>' +
+            '   <div class="col-xs-2">Team</div>' +
+            '</div>';
+        $.each(data.players, function (i, _p) {
+                if (_p.team != 'undefined' && _p.team == 'home'){
+                    playerHome = playerHome +
+                        '<div class="row player info team-' + _p.team + '">' +
+                        '   <div class="col-xs-1">' + _p.no + '</div>' +
+                        '   <div class="col-xs-3">' + _p.name + '</div>' +
+                        '   <div class="col-xs-2">' + _p.team + '</div>' +
+                        '</div>';
+                } else if (_p.team != 'undefined' && _p.team == 'host'){
+                    playerHost = playerHost +
+                        '<div class="row list player team-' + _p.team + '">' +
+                        '   <div class="col-xs-1">' + _p.no + '</div>' +
+                        '   <div class="col-xs-3">' + _p.name + '</div>' +
+                        '   <div class="col-xs-2">' + _p.team + '</div>' +
+                        '</div>';
+                }
+
+            }
+        );
+        playerHtml = '<div class="container">' + playerHome + '</div> <div class="container">' + playerHost + '</div>';
+        $(_ids.dialog.match_info +' div.players div.infoData').html(playerHtml);
+
+        // add goal list
+        assistHtml = '';
+        goalHtml =
+            '<div class="row list goal">' +
+            '   <div class="col-xs-3">Cas</div>' +
+            '   <div class="col-xs-2">Team</div>' +
+            '   <div class="col-xs-3">Autor</div>' +
+            '   <div class="col-xs-4">Assistence</div>' +
+            '</div>';
+        $.each(data.goals, function (i, _g) {
+            var a = 0;
+            assistHtml = '';
+            $.each(_g.assists, function (i, _p) {
+                if(a > 0) assistHtml = assistHtml + ' + ';
+                assistHtml = assistHtml + '<span class="player">#'+ _p.no + ' - ' + _p.name + '</span>';
+                a++;
+            });
+
+            goalHtml = goalHtml +
+                '<div class="row list goal team-' + _g.team + '">' +
+                '   <div class="col-xs-3">' + _g.time + '</div>' +
+                '   <div class="col-xs-2">' + _g.team + '</div>' +
+                '   <div class="col-xs-3"><span class="player">#'+ _g.author.no + ' - ' + _g.author.name + '</span></div>' +
+                '   <div class="col-xs-4">' + assistHtml + '</div>' +
+                '</div>';
+        });
+
+        goalHtml = '<div class="container">' + goalHtml + '</div>';
+        $(_ids.dialog.match_info +' div.goals div.infoData').html(goalHtml);
+
+        $(_ids.dialog.match_info).modal('show');
+
+    }
+
+
+    function _hideAllModals() {
+        $('div.modal-dialog').each(function () {
+            $(this).parent('div.modal').modal('hide');
+        })
+    }
+
+    function _getHumanTimeDiff($time1, $time2) {
+        if(typeof $time2 != 'undefined') {
+            diff = $time2 - $time1;
+        } else {
+            diff = $time1 || 0;
+        }
+
+        ts = diff * 1000;
+
+        if(diff < (60*60)) {
+            format = 'mm:ss';
+        } else {
+            format = 'h:mm:ss';
+        }
+
+        return moment(ts).format(format);
+    }
+
 
     match.getData = function () {
         return _data;
@@ -367,7 +577,6 @@
 
 
     function _initScoreBoard() {
-        console.log('init Scoreboard');
         _setScore('home', _data.score.home);
         _setScore('host', _data.score.host);
 
@@ -383,7 +592,6 @@
 
 
     function addGoalToScoreBoard($team){
-        console.log('addgoal ' + $team);
         score = match.getScore($team);
         score++;
 

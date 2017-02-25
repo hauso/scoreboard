@@ -30,8 +30,8 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Akce <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Seznam zapasu</a></li>
-                        <li><a href="#">Odeslat na server</a></li>
+                        <li><a href="#" class="match-action" data-action="manageMatchesAction">Seznam zapasu</a></li>
+                        <li><a href="#" class="match-action" data-action="sendCurrentMatchToServerAction">Odeslat na server</a></li>
                     </ul>
                 </li>
             </ul>
@@ -56,17 +56,7 @@
 </div>
 
 
-<!--
-<div id="controls">
-    <div class="buttons">
-
-    </div>
-</div>
-//-->
-
-
-
-
+<!-- GOAL MODAL //-->
 <div class="modal fade" id="goal-dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -131,11 +121,73 @@
 </div>
 
 
+
+<!-- Match modal //-->
+<div class="modal fade" id="match-list-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nacist zapas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="match-collection">
+                    <!-- FILLED BY JS //-->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-action btn btn-warning" data-dismiss="modal">Zrusit</button>
+                <button type="button" class="submit-action btn btn-primary">Nacist</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Match modal //-->
+<div class="modal fade" id="match-info-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Informace o zapasu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="teams">
+                    <div class="heading">Teamy</div>
+                    <div class="infoData">&nbsp;</div>
+                </div>
+                <div class="players">
+                    <div class="heading">Hraci</div>
+                    <div class="infoData">&nbsp;</div>
+                </div>
+                <div class="goals">
+                    <div class="heading">Goly</div>
+                    <div class="infoData">&nbsp;</div>
+                </div>
+                <div class="events">
+                    <div class="heading">Udalosti</div>
+                    <div class="infoData">&nbsp;</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-action btn btn-warning" data-dismiss="modal">Zavrit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script type="text/javascript">
 
     /* match config */
     var matchConfig = {
-        teams: {home:{side:'home',name:'Svetly'}, host:{side:'host',name:'Tmavy'}},
+        teams: [{side:'home',name:'Svetly'}, {side:'host',name:'Tmavy'}],
         players:[
             {id: 13, no: 7, team: 'home', name: 'Pete Sampras'},
             {id: 54, no: 37, team: 'home', name: 'Andre Agassi'},
@@ -149,10 +201,17 @@
         ]
     };
 
-    // init match with config
+
     $('document').ready(function() {
+        $('#navbar a.match-action').each(function () {
+           $(this).click(match[$(this).data('action')]);
+        });
+
         match.init(matchConfig);
     });
+
+
+
 </script>
 
 </body>
