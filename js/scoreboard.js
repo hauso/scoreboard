@@ -47,6 +47,10 @@
             // TODO : check what should do ...
         }
 
+        if(typeof config.matchTime != 'undefined') {
+            _data.matchTime = config.matchTime;
+        }
+
         // add teams from config
         if(typeof config.teams != 'undefined') {
             $.each(config.teams, function (teamId, _t) {
@@ -148,7 +152,6 @@
                 close: 'fa fa-close',
             },
             sideBySide: true,
-            format: 'Do MMM YYYY h:mm'
         });
 
         $(_ids.dialog.new_match).modal('show');
@@ -160,14 +163,16 @@
         });
 
         init = function () {
-            matchTime = moment($('#newMatchTime').val()).unix();
+            timestamp = moment($('#newMatchTime').val()).unix();
+
+            time= timestamp * 1000;
 
             $config = {
                 teams: {
                     home: {side:'home', name: $('#newMatchTeamHomeName').val()},
                     host: {side:'host', name: $('#newMatchTeamHostName').val()},
                 },
-                time: matchTime,
+                matchTime: time,
             };
             $(_ids.dialog.new_match).modal('hide');
 
