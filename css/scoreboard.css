@@ -59,6 +59,14 @@ div.modal-dialog .modal-title {
     font: 35px fantasy;
 }
 
+
+/* fix calnedar block pos */
+.bootstrap-datetimepicker-widget>ul {
+    padding: 0;
+}
+
+
+
 #scoreboard {
     /*            width: 100%;*/
     height: 300px;

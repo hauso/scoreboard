@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <title>Scoreboard</title>
 
+    <script type="text/javascript" src="js/moment-with-locales.min.js"></script>
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="js/moment.js"></script>
     <script type="text/javascript" src="js/scoreboard.js"></script>
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="css/scoreboard.css" />
 </head>
 <body>
@@ -28,11 +32,9 @@
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="true">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Akce <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" class="match-action" data-action="manageMatchesAction">Seznam zapasu</a></li>
-                        <li><a href="#" class="match-action" data-action="sendCurrentMatchToServerAction">Odeslat na server</a></li>
-                    </ul>
+                    <li><a href="#" class="match-action" data-action="initNewMatchAction">Novy zapas</a></li>
+                    <li><a href="#" class="match-action" data-action="manageMatchesAction">Seznam zapasu</a></li>
+                    <li><a href="#" class="match-action" data-action="sendCurrentMatchToServerAction">Odeslat na server</a></li>
                 </li>
             </ul>
         </div>
@@ -41,13 +43,13 @@
 <div id="scoreboard" class="container-fluid">
     <div class="score row">
         <div class="team-score home col-xs-5 col-sm-5" data-team-side="home">
-            <span id="score-home">0</span>
+            <span id="score-home">&nbsp;</span>
         </div>
         <div class="delimeter col-xs-2 col-sm-2">
             <span>:</span>
         </div>
         <div class="team-score host col-xs-5 col-sm-5" data-team-side="host">
-            <span id="score-host">0</span>
+            <span id="score-host">&nbsp;</span>
         </div>
     </div>
     <div class="score-flip-button">
@@ -183,9 +185,54 @@
 </div>
 
 
+<!-- New Match modal //-->
+<div class="modal fade" id="match-new-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novy zapas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-2">Cas</div>
+                        <div class="col-xs-4">
+                            <div class='input-group date' id='datetimepicker1'>
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="heading">Teamy</div>
+                    <div class="row">
+                        <div class="col-xs-2">Domaci</div>
+                        <div class="col-xs-10"><input type="text" id="newMatchTeamHomeName" name="home"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2">Hoste</div>
+                        <div class="col-xs-10"><input type="text" id="newMatchTeamHostName" name="host" /></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-action btn btn-warning" data-dismiss="modal">Zrusit</button>
+                <button type="button" class="submit-action btn btn-primary">Zacat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
 
     /* match config */
+/*
     var matchConfig = {
         teams: [{side:'home',name:'Svetly'}, {side:'host',name:'Tmavy'}],
         players:[
@@ -200,14 +247,14 @@
             {id: 92, no: 66, team: 'host', name: 'Mario Lemieux'},
         ]
     };
+ */
 
 
     $('document').ready(function() {
+        moment.locale('cs');
         $('#navbar a.match-action').each(function () {
            $(this).click(match[$(this).data('action')]);
         });
-
-        match.init(matchConfig);
     });
 
 

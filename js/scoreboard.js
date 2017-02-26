@@ -18,6 +18,7 @@
             goal: '#goal-dialog',
             match_list: '#match-list-dialog',
             match_info: '#match-info-dialog',
+            new_match: '#match-new-dialog',
             /*goal: '#goal-dialog',*/
 
         },
@@ -76,6 +77,8 @@
         _initScoreBoard();
         _initButtons();
 
+        match.saveLocal();
+
     }
 
 
@@ -92,6 +95,10 @@
 
     match.manageMatchesAction = function () {
         manageMatchesDialog(match.getCollection());
+    }
+
+    match.initNewMatchAction = function() {
+        newMatchDialog();
     }
 
     match.loadMatchAction = function(id) {
@@ -125,6 +132,47 @@
         localStorage.removeItem(id);
 
         manageMatchesDialog(match.getCollection());
+    }
+
+    newMatchDialog = function () {
+        $('#datetimepicker1').datetimepicker({
+            icons:{
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar',
+                up: 'fa fa-caret-up',
+                down: 'fa fa-caret-down',
+                previous: 'fa fa-caret-left',
+                next: 'fa fa-caret-right',
+                today: 'fa fa-calendar-check-o',
+                clear: 'fa fa-trash',
+                close: 'fa fa-close',
+            },
+            sideBySide: true,
+            format: 'Do MMM YYYY h:mm'
+        });
+
+        $(_ids.dialog.new_match).modal('show');
+
+        $(_ids.dialog.new_match + ' button.submit-action').off("click").click(function(){
+            init();
+
+            $(_ids.goal_dialog).modal('hide');
+        });
+
+        init = function () {
+            matchTime = moment($('#newMatchTime').val()).unix();
+
+            $config = {
+                teams: {
+                    home: {side:'home', name: $('#newMatchTeamHomeName').val()},
+                    host: {side:'host', name: $('#newMatchTeamHostName').val()},
+                },
+                time: matchTime,
+            };
+            $(_ids.dialog.new_match).modal('hide');
+
+            match.init($config);
+        }
     }
 
     manageMatchesDialog = function (collectionList) {
