@@ -9,7 +9,6 @@
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript" src="js/moment.js"></script>
     <script type="text/javascript" src="js/scoreboard.js"></script>
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
@@ -31,11 +30,10 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="true">
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
                     <li><a href="#" class="match-action" data-action="initNewMatchAction">Novy zapas</a></li>
                     <li><a href="#" class="match-action" data-action="manageMatchesAction">Seznam zapasu</a></li>
+                    <li><a href="#" class="match-action player-manage" data-action="managePlayersAction" style="display: none">Sprava hracu</a></li>
                     <li><a href="#" class="match-action" data-action="sendCurrentMatchToServerAction">Odeslat na server</a></li>
-                </li>
             </ul>
         </div>
     </div>
@@ -224,6 +222,74 @@
             <div class="modal-footer">
                 <button type="button" class="cancel-action btn btn-warning" data-dismiss="modal">Zrusit</button>
                 <button type="button" class="submit-action btn btn-primary">Zacat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Manage Player modal //-->
+<div class="modal fade" id="player-list-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sprava hracu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="player-collection">
+                    <!-- FILLED BY JS //-->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-action btn btn-warning" data-dismiss="modal">Zrusit</button>
+                <button type="button" class="new-action btn btn-primary">Novy hrac</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- New Match modal //-->
+<div class="modal fade" id="player-edit-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novy hrac</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="form-group">
+                        <label for="newPlayerId">ID:</label>
+                        <input type="text" class="form-control" id=editPlayerId" name="id">
+                    </div>
+                    <div class="form-group">
+                        <label for=editPlayerNo">No:</label>
+                        <input type="text" class="form-control" id=editPlayerNo" name="no">
+                    </div>
+                    <div class="form-group">
+                        <label for=editPlayerName">Meno:</label>
+                        <input type="text" class="form-control" id=editPlayerName" name="name">
+                    </div>
+                    <div class="form-group team-selector">
+                        <label for=editPlayerTeam">Team:</label>
+                        <select name="team" class="form-control" id=editPlayerTeam">
+                            <!-- FILL BY JS -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="delete-action btn btn-danger" data-dismiss="modal">Smazat</button>
+                <button type="button" class="cancel-action btn btn-warning" data-dismiss="modal">Zrusit</button>
+                <button type="button" class="create-action btn btn-primary" data-dismiss="modal">Pridat</button>
+                <button type="button" class="edit-action btn btn-primary" data-dismiss="modal">Upravit</button>
             </div>
         </div>
     </div>

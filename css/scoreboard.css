@@ -4,6 +4,10 @@
  * @author Tomas Domanik
  */
 
+body {
+    font-size: 16px;
+}
+
 /* update bootstrap */
 .btn {
     padding: 10px;
@@ -100,12 +104,12 @@ div.modal-dialog .modal-title {
 #scoreboard .score .delimeter span {
     padding-top: 50px;
 }
-.score .home{
+.score .home, .team-home{
     color: #000000;
     background-color: #FFFFFF;
 }
 
-.score .host{
+.score .host, .team-host{
     color: #FFFFFF;
     background-color: #000000;
 }

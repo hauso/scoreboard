@@ -16,11 +16,11 @@
         },
         dialog: {
             goal: '#goal-dialog',
-            match_list: '#match-list-dialog',
-            match_info: '#match-info-dialog',
-            new_match: '#match-new-dialog',
-            /*goal: '#goal-dialog',*/
-
+            match_list: '#match-list-dialog ',
+            match_info: '#match-info-dialog ',
+            new_match: '#match-new-dialog ',
+            player_list: '#player-list-dialog ',
+            player_edit: '#player-edit-dialog ',
         },
         'goal_dialog': '#goal-dialog',
         'flip_score_button' : '#flip-score-button',
@@ -44,7 +44,11 @@
         var config = $config || {};
 
         if(typeof config.matchId != 'undefined') {
-            // TODO : check what should do ...
+            _data.matchId = config.matchId;
+        }
+
+        if(typeof config.parent != 'undefined') {
+            _data.parent = config.parent;
         }
 
         if(typeof config.matchTime != 'undefined') {
@@ -78,11 +82,22 @@
                 match.addPlayer(_p.id, _p.no, _p.name, _p.team);
             });
         }
+
+        // add players from config
+        if(typeof config.goals != 'undefined') {
+            _data.goals = config.goals;
+        }
+
         _initScoreBoard();
         _initButtons();
 
-        match.saveLocal();
+        $('#navbar a.match-action.player-manage').show();
 
+        if(!_data.matchId) {
+            _data.matchId = _data.matchTime;
+        }
+
+        match.saveLocal();
     }
 
 
@@ -100,6 +115,13 @@
     match.manageMatchesAction = function () {
         manageMatchesDialog(match.getCollection());
     }
+
+    match.managePlayersAction = function () {
+        players = _data.players;
+
+        managePlayersDialog(players);
+    }
+
 
     match.initNewMatchAction = function() {
         newMatchDialog();
@@ -303,6 +325,183 @@
     }
 
 
+    managePlayersDialog = function (playerList) {
+        playerHtml = '';
+
+        for(pID in playerList) {
+            _p = playerList[pID];
+
+            playerHtml = playerHtml +
+                '<div class="player-row row" data-player-id="' + pID + '">' +
+                '   <div class="col-xs-1">' + _p.no + '</div>' +
+                '   <div class="col-xs-2">' + _p.name + '</div>' +
+                '   <div class="col-xs-2 team-' + _p.team + '">' + _data.teams[_p.team].name + '</div>' +
+                '   <div class="col-xs-2"><span class="btn btn-primary" data-action="editPlayerAction" >upravit</span></div>';
+            if(match.getPlayerGoalsCount(_p.id) == 0) {
+                playerHtml = playerHtml + '   <div class="col-xs-2"><span class="btn btn-warning" data-action="deletePlayerAction" >smazat</span></div>';
+            }
+
+            playerHtml = playerHtml + '</div>';
+        }
+
+        $(_ids.dialog.player_list +' div.player-collection').html(playerHtml);
+
+        $(_ids.dialog.player_list +' div.player-row span.btn[data-action]').each(function () {
+            $(this).click(function(){
+                match[$(this).data('action')]($(this).closest('div.player-row').data('player-id'), _data.matchId);
+                $(_ids.dialog.player_list).modal('hide');
+
+            });
+        });
+
+
+
+        $(_ids.dialog.player_list + ' button.new-action').off("click").click(function(){
+            match.newPlayerAction(match.getMatchId());
+
+            $(_ids.dialog.player_list).modal('hide');
+        });
+
+        $(_ids.dialog.player_list).modal('show');
+    }
+
+    match.editPlayerAction = function(playerId, matchId) {
+        editPlayerDialog(playerId, matchId);
+    };
+
+    match.newPlayerAction = function() {
+        matchId = match.getMatchId();
+
+        editPlayerDialog(null, matchId);
+    }
+
+    editPlayerDialog = function ($playerId, $matchId) {
+
+        teamSelectHtml = '';
+
+        for(side in _data.teams) {
+            _t = _data.teams[side];
+            teamSelectHtml = teamSelectHtml + '<option value=' + _t.side + '>' + _t.name + '</option>';
+        }
+
+        $(_ids.dialog.player_edit + ' div.team-selector select').html(teamSelectHtml);
+
+        if($playerId) {
+            _p = match.getPlayer($playerId);
+            $(_ids.dialog.player_edit + 'div.modal-body input[name="id"]').val($playerId);
+            $(_ids.dialog.player_edit + 'div.modal-body input[name="no"]').val(_p.no);
+            $(_ids.dialog.player_edit + 'div.modal-body input[name="name"]').val(_p.name);
+            $(_ids.dialog.player_edit + 'div.modal-body select[name="team"]').val(_p.side);
+
+            $(_ids.dialog.player_edit + 'div.modal-body input[name="id"]').prop('disabled', true);
+            $(_ids.dialog.player_edit + 'button.create-action').hide();
+            $(_ids.dialog.player_edit + 'button.edit-action').show();
+
+            goals = match.getPlayerGoals($playerId);
+            if(goals.length > 0) {
+                $(_ids.dialog.player_edit + 'button.delete-action').hide();
+            } else {
+                $(_ids.dialog.player_edit + 'button.delete-action').show();
+            }
+        } else {
+            $(_ids.dialog.player_edit + 'div.modal-body input[name="id"]').val("");
+            $(_ids.dialog.player_edit + 'div.modal-body input[name="no"]').val("");
+            $(_ids.dialog.player_edit + 'div.modal-body input[name="name"]').val("");
+            $(_ids.dialog.player_edit + 'div.modal-body select[name="team"]').val("");
+            $(_ids.dialog.player_edit + 'div.modal-body input[name="id"]').prop('disabled', false);
+
+            $(_ids.dialog.player_edit + 'button.create-action').show();
+            $(_ids.dialog.player_edit + 'button.delete-action').hide();
+            $(_ids.dialog.player_edit + 'button.edit-action').hide();
+        }
+
+        $(_ids.dialog.player_edit + 'button.edit-action').off("click").click(function(){
+            playerData = {
+                id: $playerId || $(_ids.dialog.player_edit + 'div.modal-body input[name="id"]').val(),
+                no: $(_ids.dialog.player_edit + 'div.modal-body input[name="no"]').val(),
+                name: $(_ids.dialog.player_edit + 'div.modal-body input[name="name"]').val(),
+                team: $(_ids.dialog.player_edit + 'div.modal-body select[name="team"]').val(),
+            };
+
+            save(playerData);
+
+            $(_ids.dialog.player_edit).modal('hide');
+        });
+
+
+        $(_ids.dialog.player_edit + 'button.create-action').off("click").click(function(){
+            newId = getNewTempId();
+            formPlayerId = $(_ids.dialog.player_edit + 'div.modal-body input[name="id"]').val()
+            playerData = {
+                id: formPlayerId || newId,
+                no: $(_ids.dialog.player_edit + 'div.modal-body input[name="no"]').val(),
+                name: $(_ids.dialog.player_edit + 'div.modal-body input[name="name"]').val(),
+                team: $(_ids.dialog.player_edit + 'div.modal-body select[name="team"]').val(),
+            };
+
+            save(playerData);
+
+            $(_ids.dialog.player_edit).modal('hide');
+        });
+
+
+        $(_ids.dialog.player_edit + 'button.delete-action').off("click").click(function(){
+            match.deletePlayerAction($playerId, $matchId);
+
+            $(_ids.dialog.player_edit).modal('hide');
+        });
+
+        $(_ids.dialog.player_edit).modal('show');
+
+
+
+        save = function(player) {
+            if(typeof player.id == 'undefined' || player.id == '') {
+                return false;
+            }
+
+            _data.players[player.id] = player;
+
+            match.saveLocal();
+        }
+
+        getNewTempId = function() {
+            var randId = Math.floor((Math.random() * 1000) + 1) + 1000;
+
+            newId  = 'temp-' + randId;
+            used =  match.getPlayer(newId);
+            if(typeof used.id != 'undefined') {
+                newId = getNewTempId();
+            }
+
+            return newId;
+        }
+    }
+
+
+    match.deletePlayerAction = function(playerId, $matchId) {
+        if(typeof $matchId == 'undefined' || $matchId == _data.matchId){
+            delete _data.players[playerId];
+
+            //playerCollection = _data.players;
+        }
+
+        if(typeof $matchId != 'undefined') {
+            _m = JSON.parse(localStorage.getItem('match-' + matchId));
+
+            delete _m.players[playerId];
+
+            localStorage.setItem(matchId, _m);
+
+            //playerCollection = _m.players;
+        }
+
+        _hideAllModals();
+
+            //managePlayersDialog(playerCollection);
+    }
+
+
     function _hideAllModals() {
         $('div.modal-dialog').each(function () {
             $(this).parent('div.modal').modal('hide');
@@ -337,8 +536,7 @@
         return matchId;
     }
 
-    match.saveLocal =function()
-    {
+    match.saveLocal = function() {
         localStorage.setItem('match-' + match.getMatchId(), JSON.stringify(match.getData()));
     }
 
@@ -461,30 +659,6 @@
         if(typeof $team == 'undefined') {
             $('a[aria-controls="collapseTeam"]').click();
         }
-
-        /* jQuery dialog */
-        /*
-         $( _ids.goal_dialog ).dialog({
-         modal: true,
-         buttons: [
-         {
-         text: "Zrusit",
-         click: function() {
-         alert('Gol nebyl ulozen !');
-         $(  _ids.goal_dialog ).dialog( "close" );
-         }
-         },
-         {
-         text: "Ulozit",
-         click: function() {
-         addGoalToScoreBoard('home');
-
-         $(  _ids.goal_dialog ).dialog( "close" );
-         }
-         }
-         ]
-         });
-         */
 
         $('#goal-dialog p.add-goal.button-team').off("click").click(function(){
             var team = $(this).data('team-side');
@@ -628,6 +802,23 @@
         }
     }
 
+    match.getPlayerGoals = function (playerId) {
+        var playerGoals = [];
+        for(gID in _data.goals) {
+            _g = _data.goals[gID];
+            if(playerId == _g.author.id){
+                playerGoals.push(_g);
+            }
+        }
+
+        return playerGoals;
+    }
+
+    match.getPlayerGoalsCount = function (playerId) {
+        playerGoals = match.getPlayerGoals(playerId);
+
+        return playerGoals.length;
+    }
 
     function _initScoreBoard() {
         _setScore('home', _data.score.home);
