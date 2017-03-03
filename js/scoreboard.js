@@ -114,7 +114,7 @@
     match.getCollection = function() {
         var collection = [];
         $.each(localStorage, function(item, data){
-            if(item.indexOf('match-') == 0) {
+            if(item.indexOf('match-') == 0 && data.indexOf('[object Object]') < 0) {
                 collection[item] = data;
             }
         });
@@ -161,7 +161,9 @@
 
 
     match.sendMatchAction = function(id) {
-        match.send(id);
+        loadedData = JSON.parse(localStorage.getItem(id));
+
+        sendToServerDialog(loadedData);
     }
 
     match.deleteMatchAction = function(id) {
@@ -546,8 +548,12 @@
         return matchId;
     }
 
-    match.saveLocal = function() {
-        localStorage.setItem('match-' + match.getMatchId(), JSON.stringify(match.getData()));
+    match.saveLocal = function($data) {
+        var _data = $data || match.getData();
+        var _matchId = _data.matchId;
+
+
+        localStorage.setItem('match-' + _matchId, JSON.stringify(_data) );
     }
 
 
@@ -835,14 +841,14 @@
     }
 
     sendToServerDialog = function ($data) {
-        var url = _data.api.sendMatchDataUrl;
+        var url = $data.api.sendMatchDataUrl;
         $(_ids.dialog.match_data_send + 'div.modal-body input[name="api_url"]').val(url);
 
         $(_ids.dialog.match_data_send + ' button.send-action').off("click").click(function(){
             apiUrl = $(_ids.dialog.match_data_send + 'div.modal-body input[name="api_url"]').val();
 
-            _data.api.sendMatchDataUrl = apiUrl;
-            match.saveLocal();
+            $data.api.sendMatchDataUrl = apiUrl;
+            match.saveLocal($data);
 
             params = {
                 url: apiUrl,
