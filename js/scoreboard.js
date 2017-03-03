@@ -18,6 +18,7 @@
             goal: '#goal-dialog',
             match_list: '#match-list-dialog ',
             match_info: '#match-info-dialog ',
+            match_data_send: '#match-send-dialog ',
             new_match: '#match-new-dialog ',
             player_list: '#player-list-dialog ',
             player_edit: '#player-edit-dialog ',
@@ -35,6 +36,9 @@
         score: {home: 0, host: 0},
         goals: {},
         events: {},
+        api: {
+            sendMatchDataUrl: 'http://',
+        },
     }
 
 
@@ -88,10 +92,16 @@
             _data.goals = config.goals;
         }
 
+        // add players from config
+        if(typeof config.api != 'undefined') {
+            _data.api = config.api;
+        }
+
         _initScoreBoard();
         _initButtons();
 
         $('#navbar a.match-action.player-manage').show();
+        $('#navbar a.match-action.send-data').show();
 
         if(!_data.matchId) {
             _data.matchId = _data.matchTime;
@@ -818,6 +828,55 @@
         playerGoals = match.getPlayerGoals(playerId);
 
         return playerGoals.length;
+    }
+
+    match.sendCurrentMatchToServerAction = function () {
+        sendToServerDialog(match.getData());
+    }
+
+    sendToServerDialog = function ($data) {
+        var url = _data.api.sendMatchDataUrl;
+        $(_ids.dialog.match_data_send + 'div.modal-body input[name="api_url"]').val(url);
+
+        $(_ids.dialog.match_data_send + ' button.send-action').off("click").click(function(){
+            apiUrl = $(_ids.dialog.match_data_send + 'div.modal-body input[name="api_url"]').val();
+
+            _data.api.sendMatchDataUrl = apiUrl;
+            match.saveLocal();
+
+            params = {
+                url: apiUrl,
+            }
+
+            _sendDataToServer($data, params);
+        });
+
+        $(_ids.dialog.match_data_send).modal('show');
+    }
+
+    function _sendDataToServer(data, $params) {
+        if(typeof $params.url == 'undefined') {
+            alert('ERROR in given parameters, server URL not set!');
+            return;
+        }
+
+        var origSendButton = $(_ids.dialog.match_data_send + 'div.modal-footer button.send-action').html();
+        sendingButtonHtml = '<i class="fa fa-spinner fa-spin"></i> Sending data ...';
+        $(_ids.dialog.match_data_send + 'div.modal-footer button.send-action').html(sendingButtonHtml).prop('disabled', true);
+
+        var _dj = JSON.stringify(data);
+        $.ajax({
+            type: "POST",
+            url: $params.url,
+            data: _dj,
+            dataType: 'json',
+            error: function(xhr, status, error){
+                alert(status + ' - ' + error);
+            },
+            complete: function(){
+                $(_ids.dialog.match_data_send + 'div.modal-footer button.send-action').html(origSendButton).prop('disabled', false);;
+            },
+        });
     }
 
     function _initScoreBoard() {

@@ -33,7 +33,7 @@
                     <li><a href="#" class="match-action" data-action="initNewMatchAction">Novy zapas</a></li>
                     <li><a href="#" class="match-action" data-action="manageMatchesAction">Seznam zapasu</a></li>
                     <li><a href="#" class="match-action player-manage" data-action="managePlayersAction" style="display: none">Sprava hracu</a></li>
-                    <li><a href="#" class="match-action" data-action="sendCurrentMatchToServerAction">Odeslat na server</a></li>
+                    <li><a href="#" class="match-action send-data" data-action="sendCurrentMatchToServerAction" style="display: none">Odeslat na server</a></li>
             </ul>
         </div>
     </div>
@@ -294,6 +294,33 @@
         </div>
     </div>
 </div>
+
+<!-- Match modal //-->
+<div class="modal fade" id="match-send-dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Odeslat zapas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="form-group">
+                        <label for="newPlayerId">Server API URL:</label>
+                        <input type="text" class="form-control" name="api_url">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-action btn btn-warning" data-dismiss="modal">Zavrit</button>
+                <button type="button" class="send-action btn btn-primary">Odeslat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript">
 
