@@ -72,13 +72,16 @@ div.modal-dialog .modal-title {
 
 
 #scoreboard {
-    /*            width: 100%;*/
+    /*
+    width: 100%;
     height: 300px;
     border: 1px solid red;
+    */
+    margin-top: 50px;
 }
 
 #scoreboard .score {
-    font: 500px fantasy;
+    font: 35vw fantasy;
 
 }
 
@@ -91,7 +94,7 @@ div.modal-dialog .modal-title {
 }
 
 #scoreboard .score .home span, #scoreboard .score .host span{
-    padding: 50px;
+    padding: 5vw;
 }
 
 #scoreboard .score .home, #scoreboard .score .host {
