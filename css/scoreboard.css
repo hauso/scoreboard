@@ -82,7 +82,6 @@ div.modal-dialog .modal-title {
 
 #scoreboard .score {
     font: 35vw fantasy;
-
 }
 
 #scoreboard .score div {
@@ -207,3 +206,9 @@ p.add-goal.btn.team-selected span.name {
     color: #FFFFFF;
     background-color: #000000;
 }
+
+#match-new-dialog div.heading {
+    margin-top: 30px;
+    font-size: 30px;
+}
+

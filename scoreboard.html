@@ -195,27 +195,24 @@
             </div>
             <div class="modal-body">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-xs-2">Cas</div>
-                        <div class="col-xs-4">
-                            <div class='input-group date' id='datetimepicker1'>
-                                <input type='text' class="form-control" id="newMatchTime" />
-                                <span class="input-group-addon">
-                                    <span class="fa fa-calendar"></span>
-                                </span>
-                            </div>
+
+                    <div class="form-group">
+                        <label for="newMatchTime">Datum:</label>
+                        <div class='input-group date' id='datetimepicker1'>
+                            <input type='text' class="form-control" id="newMatchTime" />
+                            <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
                         </div>
                     </div>
-                </div>
-                <div class="container">
                     <div class="heading">Teamy</div>
-                    <div class="row">
-                        <div class="col-xs-2">Domaci</div>
-                        <div class="col-xs-10"><input type="text" id="newMatchTeamHomeName" name="home"/></div>
+                    <div class="form-group">
+                        <label for="newMatchTeamHomeName">Domaci:</label>
+                        <input type="text" class="form-control" id="newMatchTeamHomeName" name="home"/>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-2">Hoste</div>
-                        <div class="col-xs-10"><input type="text" id="newMatchTeamHostName" name="host" /></div>
+                    <div class="form-group">
+                        <label for="newMatchTeamHostName">Hoste:</label>
+                        <input type="text" class="form-control" id="newMatchTeamHostName" name="host" />
                     </div>
                 </div>
             </div>
@@ -266,19 +263,19 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="form-group">
-                        <label for="newPlayerId">ID:</label>
+                        <label for="editPlayerId">ID:</label>
                         <input type="text" class="form-control" id="editPlayerId" name="id">
                     </div>
                     <div class="form-group">
-                        <label for=editPlayerNo">No:</label>
+                        <label for="editPlayerNo">No:</label>
                         <input type="text" class="form-control" id="editPlayerNo" name="no">
                     </div>
                     <div class="form-group">
-                        <label for=editPlayerName">Meno:</label>
+                        <label for="editPlayerName">Meno:</label>
                         <input type="text" class="form-control" id="editPlayerName" name="name">
                     </div>
                     <div class="form-group team-selector">
-                        <label for=editPlayerTeam">Team:</label>
+                        <label for="editPlayerTeam">Team:</label>
                         <select name="team" class="form-control" id="editPlayerTeam">
                             <!-- FILL BY JS -->
                         </select>
@@ -324,30 +321,32 @@
 
 <script type="text/javascript">
 
-    /* match config */
-/*
-    var matchConfig = {
-        teams: [{side:'home',name:'Svetly'}, {side:'host',name:'Tmavy'}],
-        players:[
-            {id: 13, no: 7, team: 'home', name: 'Pete Sampras'},
-            {id: 54, no: 37, team: 'home', name: 'Andre Agassi'},
-            {id: 22, no: 51, team: 'home', name: 'Novak Djokovic'},
-            {id: 17, no: 75, team: 'home', name: 'Rafael Nadal'},
-            {id: 14, no: 77, team: 'home', name: 'Andy Murray'},
-            {id: 45, no: 87, team: 'host', name: 'Sidney Crosby'},
-            {id: 42, no: 8, team: 'host', name: 'Alex Ovechkin'},
-            {id: 74, no: 99, team: 'host', name: 'Wayne Gretzky'},
-            {id: 92, no: 66, team: 'host', name: 'Mario Lemieux'},
-        ]
-    };
- */
-
 
     $('document').ready(function() {
         moment.locale('cs');
         $('#navbar a.match-action').each(function () {
            $(this).click(match[$(this).data('action')]);
         });
+
+        /* match config */
+/*
+         var matchConfig = {
+             teams: [{side:'home',name:'Svetly'}, {side:'host',name:'Tmavy'}],
+             players:[
+                 {id: 13, no: 7, team: 'home', name: 'Pete Sampras'},
+                 {id: 54, no: 37, team: 'home', name: 'Andre Agassi'},
+                 {id: 22, no: 51, team: 'home', name: 'Novak Djokovic'},
+                 {id: 17, no: 75, team: 'home', name: 'Rafael Nadal'},
+                 {id: 14, no: 77, team: 'home', name: 'Andy Murray'},
+                 {id: 45, no: 87, team: 'host', name: 'Sidney Crosby'},
+                 {id: 42, no: 8, team: 'host', name: 'Alex Ovechkin'},
+                 {id: 74, no: 99, team: 'host', name: 'Wayne Gretzky'},
+                 {id: 92, no: 66, team: 'host', name: 'Mario Lemieux'},
+             ]
+         };
+
+         match.init(matchConfig);
+*/
     });
 
 
