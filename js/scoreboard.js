@@ -29,7 +29,7 @@
 
     var _data = { // private
         matchId: false,
-        matchTime: Date.now(),
+        matchTime: (moment().unix()*1000 + moment().milliseconds()),
         parent: null,
         teams: {},
         players: {},
@@ -39,6 +39,13 @@
         api: {
             sendMatchDataUrl: 'http://',
         },
+    }
+
+    var _setting = {
+        format: {
+            datetime: 'D/MMM YYYY HH:mm',
+            date: 'DoM YYYY',
+        }
     }
 
 
@@ -174,6 +181,8 @@
 
     newMatchDialog = function () {
         $('#datetimepicker1').datetimepicker({
+            format: _setting.format.datetime,
+            locale: moment.locale(),
             icons:{
                 time: 'fa fa-clock-o',
                 date: 'fa fa-calendar',
@@ -197,16 +206,15 @@
         });
 
         init = function () {
-            timestamp = moment($('#newMatchTime').val()).unix();
-
-            time= timestamp * 1000;
+            timestamp = moment($('#newMatchTime').val(), _setting.format.datetime).unix()*1000
+                + moment().milliseconds();
 
             $config = {
                 teams: {
                     home: {side:'home', name: $('#newMatchTeamHomeName').val()},
                     host: {side:'host', name: $('#newMatchTeamHostName').val()},
                 },
-                matchTime: time,
+                matchTime: timestamp,
             };
             $(_ids.dialog.new_match).modal('hide');
 
@@ -220,7 +228,7 @@
         for(cID in collectionList) {
             _m = JSON.parse(collectionList[cID]);
             matchHtml = matchHtml + '<div class="match-row row" data-match-id="' + cID + '">' +
-                '<div class="col-xs-3">' + moment(_m.matchTime).format('Do/MM YYYY h:mm') + '</div>' +
+                '<div class="col-xs-3">' + moment(_m.matchTime).format(_setting.format.datetime) + '</div>' +
                 '<div class="col-xs-9">' +
                 '   <span class="btn btn-primary" data-action="loadMatchAction" >pokracovat</span>' +
                 '   <span class="btn btn-default" data-action="showMatchAction" >zobrazit</span>' +
@@ -320,9 +328,10 @@
                 a++;
             });
 
+            goalTime = _getHumanTimeDiff(data.matchTime, _g.time);
             goalHtml = goalHtml +
                 '<div class="row list goal team-' + _g.team + '">' +
-                '   <div class="col-xs-3">' + _g.time + '</div>' +
+                '   <div class="col-xs-3">' + goalTime + '</div>' +
                 '   <div class="col-xs-2">' + _g.team + '</div>' +
                 '   <div class="col-xs-3"><span class="player">#'+ _g.author.no + ' - ' + _g.author.name + '</span></div>' +
                 '   <div class="col-xs-4">' + assistHtml + '</div>' +
@@ -520,6 +529,17 @@
         })
     }
 
+    function _getMatchMinSec($time) {
+        if(!$time) return '???';
+
+        var actionTime = $time
+        var gameStart = _data.matchTime;
+
+        ms = _getHumanTimeDiff(gameStart, actionTime);
+        return ms;
+    }
+
+
     function _getHumanTimeDiff($time1, $time2) {
         if(typeof $time2 != 'undefined') {
             diff = $time2 - $time1;
@@ -527,15 +547,15 @@
             diff = $time1 || 0;
         }
 
-        ts = diff * 1000;
+        diff = diff/1000;
 
-        if(diff < (60*60)) {
-            format = 'mm:ss';
-        } else {
-            format = 'h:mm:ss';
-        }
+        sec = Math.floor(diff%60);
+        min = Math.floor(diff/60);
 
-        return moment(ts).format(format);
+        if(sec<10) sec= '0'+sec;
+        var timeDiff = min + ':' + sec;
+
+        return timeDiff;
     }
 
 
@@ -616,7 +636,8 @@
         $( _ids.goal_dialog ).modal();
         $('#goal-dialog button.submit-action').removeClass('all-set');
 
-        $(_ids.goal_dialog + ' .modal-title').html('Pridat gol ' + moment(_g.getTime()).format('h:mm:ss D. MMM.'));
+        goalTime = _getMatchMinSec(_g.getTime());
+        $(_ids.goal_dialog + ' .modal-title').html('Pridat gol v case: ' + goalTime);
         $('#headingTeam a').html('Team');
         $('#headingPlayer a').html('Autor');
         $('#headingAssists a').html('Asistence');
@@ -938,7 +959,7 @@
 
 function goal()
 {
-    var _now = Date.now();
+    var _now = (moment().unix()*1000 + moment().milliseconds());
     var _data = {
         time: _now,
         team: '',
