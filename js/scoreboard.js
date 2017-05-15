@@ -526,17 +526,12 @@
 
             $('#headingTeam a').html('Team: ' + _t.name);
 
-            $("p.add-goal.button-player").each(function(){$(this).removeClass('team-selected')});
-
-            if($team == 'home') {
-                $("#host-team-players").insertAfter("#home-team-players");
-                $("#host-team-assists").insertAfter("#home-team-assists");
-            } else if($team == 'host'){
-                $("#home-team-players").insertAfter("#host-team-players");
-                $("#home-team-assists").insertAfter("#host-team-assists");
-            }
-
-            $("p.add-goal.button-player.team-"+_t.side).each(function(){$(this).addClass('team-selected')});
+            $("p.add-goal.button-player").each(function(){
+                $(this).removeClass('team-selected').hide();
+            });
+            $("p.add-goal.button-player.team-"+_t.side).each(function(){
+                $(this).addClass('team-selected').show();
+            });
 
             _g.setTeam(_t.side);
 
