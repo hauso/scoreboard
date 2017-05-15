@@ -874,7 +874,7 @@
         $.ajax({
             type: "POST",
             url: $params.url,
-            data: _dj,
+            data: {data:_dj},
             dataType: 'json',
             error: function(xhr, status, error){
                 alert(status + ' - ' + error);
