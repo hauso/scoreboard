@@ -217,3 +217,9 @@ p.add-goal.btn.team-selected span.name {
     font-size: 30px;
 }
 
+
+/* fixing scroll on modal which is open from other modal */
+.modal.fade.in {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
