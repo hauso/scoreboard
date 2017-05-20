@@ -160,21 +160,23 @@
             </div>
             <div class="modal-body">
                 <div class="teams">
-                    <div class="heading">Teamy</div>
+                    <h3>Teamy</h3>
                     <div class="infoData">&nbsp;</div>
                 </div>
                 <div class="players">
-                    <div class="heading">Hraci</div>
+                    <h3>Hraci</h3>
                     <div class="infoData">&nbsp;</div>
                 </div>
                 <div class="goals">
-                    <div class="heading">Goly</div>
+                    <h3>Goly</h3>
                     <div class="infoData">&nbsp;</div>
                 </div>
+<!--
                 <div class="events">
-                    <div class="heading">Udalosti</div>
+                    <h3>Udalosti</h3>
                     <div class="infoData">&nbsp;</div>
                 </div>
+//-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="cancel-action btn btn-warning" data-dismiss="modal">Zavrit</button>
@@ -197,6 +199,15 @@
             </div>
             <div class="modal-body">
                 <div class="container">
+                    <div class="heading">Teamy</div>
+                    <div class="form-group">
+                        <label for="newMatchTeamHomeName">Domaci:</label>
+                        <input type="text" class="form-control" id="newMatchTeamHomeName" name="home"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="newMatchTeamHostName">Hoste:</label>
+                        <input type="text" class="form-control" id="newMatchTeamHostName" name="host" />
+                    </div>
 
                     <div class="form-group">
                         <label for="newMatchTime">Datum:</label>
@@ -206,15 +217,6 @@
                             <span class="fa fa-calendar"></span>
                         </span>
                         </div>
-                    </div>
-                    <div class="heading">Teamy</div>
-                    <div class="form-group">
-                        <label for="newMatchTeamHomeName">Domaci:</label>
-                        <input type="text" class="form-control" id="newMatchTeamHomeName" name="home"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="newMatchTeamHostName">Hoste:</label>
-                        <input type="text" class="form-control" id="newMatchTeamHostName" name="host" />
                     </div>
                 </div>
             </div>
