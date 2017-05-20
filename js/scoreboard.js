@@ -231,10 +231,10 @@
                 '<div class="col-xs-12 col-md-8 match-title">' + _m.teams.home.name + ' vs ' + _m.teams.host.name + '</div>' +
                 '<div class="col-xs-12 col-md-4 match-subtitle">' + moment(_m.matchTime).format('DoMMM \'YY H:m') + '</div>' +
                 '<div class="col-xs-12 match-action">' +
-                '   <span class="btn btn-primary col-xs-6" data-action="loadMatchAction" >pokracovat</span>' +
-                '   <span class="btn btn-warning col-xs-6" data-action="deleteMatchAction" >smazat</span>' +
-                '   <span class="btn btn-default col-xs-6" data-action="showMatchAction" >zobrazit</span>' +
-                '   <span class="btn btn-default col-xs-6" data-action="sendMatchAction" >odeslat</span>' +
+                '   <span class="btn btn-primary col-xs-6 col-md-3" data-action="loadMatchAction" >pokracovat</span>' +
+                '   <span class="btn btn-warning col-xs-6 col-md-3" data-action="deleteMatchAction" >smazat</span>' +
+                '   <span class="btn btn-default col-xs-6 col-md-3" data-action="showMatchAction" >zobrazit</span>' +
+                '   <span class="btn btn-default col-xs-6 col-md-3" data-action="sendMatchAction" >odeslat</span>' +
                 '</div>' +
             '</div>';
         }
@@ -354,13 +354,13 @@
             _p = playerList[pID];
 
             playerHtml = playerHtml +
-                '<div class="player-row row" data-player-id="' + pID + '">' +
-                '   <div class="col-xs-1">' + _p.no + '</div>' +
-                '   <div class="col-xs-2">' + _p.name + '</div>' +
-                '   <div class="col-xs-2 team-' + _p.team + '">' + _data.teams[_p.team].name + '</div>' +
-                '   <div class="col-xs-2"><span class="btn btn-primary" data-action="editPlayerAction" >upravit</span></div>';
+                '<div class="player-row team-' + _p.team + ' row" data-player-id="' + pID + '">' +
+                '   <span class="col-xs-1 player-cell-no">' + _p.no + '</span>' +
+                '   <span class="col-xs-6 col-md-4 player-cell-name">' + _p.name + '</span>' +
+                '   <span class="col-xs-4 col-md-3 player-cell-team">' + _data.teams[_p.team].name + '</span>' +
+                '   <span class="col-xs-6 col-md-2 btn btn-primary" data-action="editPlayerAction" >upravit</span>';
             if(match.getPlayerGoalsCount(_p.id) == 0) {
-                playerHtml = playerHtml + '   <div class="col-xs-2"><span class="btn btn-warning" data-action="deletePlayerAction" >smazat</span></div>';
+                playerHtml = playerHtml + '   <span class="col-xs-6 col-md-2 btn btn-warning" data-action="deletePlayerAction" >smazat</span>';
             }
 
             playerHtml = playerHtml + '</div>';

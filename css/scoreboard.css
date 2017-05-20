@@ -126,6 +126,10 @@ div.modal-dialog .modal-title {
     background-color: #FFFFFF;
 }
 
+div.player-row span {
+    margin: 3px 0;
+}
+
 .text-button {
     display: inline-block;
     padding: 5px;
@@ -225,6 +229,15 @@ p.add-goal.btn.team-selected span.name {
 }
 
 
+.modal-dialog  h3 {
+    font-size: 25px;
+    margin: 10px 5px 3px;
+}
+
+.modal-dialog .modal-body .player-collection .player-row,
+.modal-dialog .modal-body .match-collection .match-row {
+    margin: 15px -7px;
+}
 
 @media (min-width: 768px) {
     .modal-dialog {
@@ -273,10 +286,6 @@ p.add-goal.btn.team-selected span.name {
 
     div.modal-dialog button.btn.all-set {
         font-size: 20px;
-    }
-
-    div.modal-dialog .match-collection .match-row {
-        margin: 15px -7px;
     }
 
     p.add-goal.btn.team-selected span.name {
