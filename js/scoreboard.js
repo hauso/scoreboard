@@ -228,12 +228,13 @@
         for(cID in collectionList) {
             _m = JSON.parse(collectionList[cID]);
             matchHtml = matchHtml + '<div class="match-row row" data-match-id="' + cID + '">' +
-                '<div class="col-xs-3">' + moment(_m.matchTime).format(_setting.format.datetime) + '</div>' +
-                '<div class="col-xs-9">' +
-                '   <span class="btn btn-primary" data-action="loadMatchAction" >pokracovat</span>' +
-                '   <span class="btn btn-default" data-action="showMatchAction" >zobrazit</span>' +
-                '   <span class="btn btn-default" data-action="sendMatchAction" >odeslat</span>' +
-                '   <span class="btn btn-warning" data-action="deleteMatchAction" >smazat</span>' +
+                '<div class="col-xs-12 col-md-8 match-title">' + _m.teams.home.name + ' vs ' + _m.teams.host.name + '</div>' +
+                '<div class="col-xs-12 col-md-4 match-subtitle">' + moment(_m.matchTime).format('DoMMM \'YY H:m') + '</div>' +
+                '<div class="col-xs-12 match-action">' +
+                '   <span class="btn btn-primary col-xs-6" data-action="loadMatchAction" >pokracovat</span>' +
+                '   <span class="btn btn-warning col-xs-6" data-action="deleteMatchAction" >smazat</span>' +
+                '   <span class="btn btn-default col-xs-6" data-action="showMatchAction" >zobrazit</span>' +
+                '   <span class="btn btn-default col-xs-6" data-action="sendMatchAction" >odeslat</span>' +
                 '</div>' +
             '</div>';
         }
