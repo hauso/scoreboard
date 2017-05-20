@@ -24,15 +24,9 @@ div.modal-dialog h4.panel-title a {
     padding: 3px 10px;
 }
 
-@media (min-width: 768px) {
-    .modal-dialog {
-        width: 80%;
-    }
 
-    .modal .container {
-        min-width: 0 !important;
-        width: auto;
-    }
+.modal-dialog button.close span {
+    font-size: 50px;
 }
 
 div.modal-dialog h4.panel-title a {
@@ -157,7 +151,8 @@ p.add-goal.button-team {
     width: 45%;
     margin: 2.5%;
     height: 200px;
-    font-size: 70px;        }
+    font-size: 70px;
+}
 
 p.add-goal.button-player {
     padding: 20px 10px;
@@ -180,6 +175,7 @@ p.add-goal.btn span.no{
 
 p.add-goal.team-selected span.no {
     font-size: 70px;
+    display: block;
 }
 
 p.add-goal.btn.team-selected span.no span.sharp {
@@ -191,7 +187,6 @@ p.add-goal.btn span.no span.sharp {
 }
 
 p.add-goal.btn span.name{
-    display: block;
     font-size: 15px;
 }
 
@@ -216,10 +211,80 @@ p.add-goal.btn.team-selected span.name {
     margin-top: 30px;
     font-size: 30px;
 }
-
+.match-collection .match-row .match-title {
+    font-size: 24px;
+}
+.match-collection .match-row .match-subtitle {
+    font-size: 18px;
+}
 
 /* fixing scroll on modal which is open from other modal */
 .modal.fade.in {
     overflow-x: hidden;
     overflow-y: auto;
 }
+
+
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        width: 80%;
+    }
+
+    .modal .container {
+        min-width: 0 !important;
+        width: auto;
+    }
+}
+
+
+/* small screen update */
+@media (max-width: 767px) {
+    .btn {
+        border-radius: 0 !important;
+    }
+
+    .modal-dialog {
+        margin: 0;
+    }
+
+    .modal-content {
+        border-radius: 0;
+    }
+
+    div.modal-dialog .modal-title {
+        font: 20px fantasy;
+    }
+
+    .modal-body {
+        padding: 0;
+    }
+
+    .modal-dialog p.add-goal.button-team {
+        font-size: 30px;
+    }
+
+    .modal-dialog p.add-goal.button-player.team-selected {
+        padding: 10px;
+        width: 45%;
+        height: 170px;
+        margin: 1.5%;
+    }
+
+    div.modal-dialog button.btn.all-set {
+        font-size: 20px;
+    }
+
+    div.modal-dialog .match-collection .match-row {
+        margin: 15px -7px;
+    }
+
+    p.add-goal.btn.team-selected span.name {
+        font-size: 15px;
+    }
+
+    .modal-header .close {
+        margin-top: -10px;
+    }
+}
+
